@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Quiz App</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .card {
+            background: #f5f5f5;
+            padding: 30px 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        #question {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        #answer {
+            font-size: 18px;
+            color: #667eea;
+            margin-top: 20px;
+        }
+
+        button {
+            border: none;
+            padding: 12px 18px;
+            margin: 5px;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .show {
+            background: #667eea;
+            color: white;
+        }
+
+        .navigation {
+            background: #764ba2;
+            color: white;
+        }
+
+        .add {
+            background: #28a745;
+            color: white;
+        }
+
+        .edit {
+            background: #ff9800;
+            color: white;
+        }
+
+        .delete {
+            background: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <h1>📚 Flashcard Quiz App</h1>
+
+    <div class="card">
+        <div id="question"></div>
+        <div id="answer"></div>
+    </div>
+
+    <button class="show" onclick="showAnswer()">Show Answer</button>
+
+    <br>
+
+    <button class="navigation" onclick="previousCard()">⬅ Previous</button>
+    <button class="navigation" onclick="nextCard()">Next ➡</button>
+
+    <br><br>
+
+    <button class="add" onclick="addCard()">➕ Add</button>
+    <button class="edit" onclick="editCard()">✏️ Edit</button>
+    <button class="delete" onclick="deleteCard()">🗑️ Delete</button>
+
+</div>
+
+<script>
+
+let flashcards = [
+    {
+        question: "What is Artificial Intelligence?",
+        answer: "AI is the simulation of human intelligence in machines."
+    },
+    {
+        question: "What is Machine Learning?",
+        answer: "Machine Learning allows computers to learn from data."
+    },
+    {
+        question: "What is Python?",
+        answer: "Python is a popular programming language."
+    }
+];
+
+let currentCard = 0;
+
+function displayCard() {
+    document.getElementById("question").innerHTML =
+        flashcards[currentCard].question;
+
+    document.getElementById("answer").innerHTML = "";
+}
+
+function showAnswer() {
+    document.getElementById("answer").innerHTML =
+        flashcards[currentCard].answer;
+}
+
+function nextCard() {
+    currentCard++;
+
+    if (currentCard >= flashcards.length) {
+        currentCard = 0;
+    }
+
+    displayCard();
+}
+
+function previousCard() {
+    currentCard--;
+
+    if (currentCard < 0) {
+        currentCard = flashcards.length - 1;
+    }
+
+    displayCard();
+}
+
+function addCard() {
+    let question = prompt("Enter your question:");
+
+    if (!question || question.trim() === "") {
+        return;
+    }
+
+    let answer = prompt("Enter the answer:");
+
+    if (!answer || answer.trim() === "") {
+        return;
+    }
+
+    flashcards.push({
+        question: question,
+        answer: answer
+    });
+
+    currentCard = flashcards.length - 1;
+    displayCard();
+}
+
+function editCard() {
+    let question = prompt(
+        "Edit question:",
+        flashcards[currentCard].question
+    );
+
+    if (!question || question.trim() === "") {
+        return;
+    }
+
+    let answer = prompt(
+        "Edit answer:",
+        flashcards[currentCard].answer
+    );
+
+    if (!answer || answer.trim() === "") {
+        return;
+    }
+
+    flashcards[currentCard].question = question;
+    flashcards[currentCard].answer = answer;
+
+    displayCard();
+}
+
+function deleteCard() {
+
+    if (flashcards.length === 1) {
+        alert("You must keep at least one flashcard.");
+        return;
+    }
+
+    flashcards.splice(currentCard, 1);
+
+    if (currentCard >= flashcards.length) {
+        currentCard = flashcards.length - 1;
+    }
+
+    displayCard();
+}
+
+displayCard();
+
+</script>
+
+</body>
+</html>
